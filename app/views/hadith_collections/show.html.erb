@@ -1,3 +1,11 @@
+<style>
+  .arabic {
+    text-align: right;
+  }
+
+
+</style>
+
 <p id="notice"><%= notice %></p>
 
 <table>
@@ -10,8 +18,8 @@
   <tbody>
     <% @hadith_collection.hadith_books.each do |book| %>
       <tr>
-        <td><%= book.title %></td>
         <td><a href="/hadith_books/<%= book.id %>">Show</a></td>
+        <td class='arabic'><%= book.title %></td>
       </tr>
     <% end %>
   </tbody>

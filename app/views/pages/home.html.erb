@@ -1,0 +1,16 @@
+
+<h1>
+	Books
+</h1>
+
+<ol>
+
+<% HadithCollection.all.each do |c| %>
+	<li>
+		<a href="/hadith_collections/<%= c.id %>">
+			<%= c.title %>
+		</a>
+	</li>
+<% end %>
+	
+</ol>
