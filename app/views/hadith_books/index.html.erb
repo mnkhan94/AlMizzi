@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Hadith Books</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @hadith_books.each do |hadith_book| %>
+      <tr>
+        <td><%= link_to 'Show', hadith_book %></td>
+        <td><%= link_to 'Edit', edit_hadith_book_path(hadith_book) %></td>
+        <td><%= link_to 'Destroy', hadith_book, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Hadith book', new_hadith_book_path %>

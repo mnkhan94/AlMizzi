@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Narrators</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @narrators.each do |narrator| %>
+      <tr>
+        <td><%= link_to 'Show', narrator %></td>
+        <td><%= link_to 'Edit', edit_narrator_path(narrator) %></td>
+        <td><%= link_to 'Destroy', narrator, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Narrator', new_narrator_path %>

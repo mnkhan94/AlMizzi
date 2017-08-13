@@ -1,0 +1,28 @@
+<%= form_for(@hadith_chapter) do |f| %>
+  <% if @hadith_chapter.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@hadith_chapter.errors.count, "error") %> prohibited this hadith_chapter from being saved:</h2>
+
+      <ul>
+      <% @hadith_chapter.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :title %><br>
+    <%= f.text_field :title, :class => "form-control" %>
+  </div>
+  <div class="field">
+    <%= f.label :notes %><br>
+    <%= f.text_area :notes, :class => "form-control" %>
+  </div>
+
+  <%= f.hidden_field :hadith_book, value: params[:hadith_book_id] %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

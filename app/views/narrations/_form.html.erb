@@ -1,0 +1,17 @@
+<%= form_for(@narration) do |f| %>
+  <% if @narration.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@narration.errors.count, "error") %> prohibited this narration from being saved:</h2>
+
+      <ul>
+      <% @narration.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

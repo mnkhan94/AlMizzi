@@ -1,0 +1,2 @@
+module HadithBooksHelper
+end
