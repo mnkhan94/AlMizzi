@@ -62,7 +62,7 @@ require 'json'
 				"hadith" => ahadith
 			}
 			
-			HadithChapter.create(hadith_book_id: HadithBook.where(position: i, title: v["title"], notes: v["notes"])
+			HadithChapter.create(hadith_book_id: HadithBook.where(position: i).first.id, title: v["title"], notes: v["notes"])
 			
 			ti = 1
 			v["hadith"].each do |hadith| 
