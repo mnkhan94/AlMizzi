@@ -63,11 +63,11 @@ require 'json'
 			}
 			
 			book_id = HadithBook.where(position: i).first.id
-			HadithChapter.create(hadith_book_id: book_id, title: v["title"], notes: v["notes"])
+			h = HadithChapter.create(hadith_book_id: book_id, title: v["title"], notes: v["notes"])
 			
 			ti = 1
 			v["hadith"].each do |hadith| 
-				Narration.create(hadith_chapter_id: HadithChapter.where(hadith_book_id: book_id, position: v["number"].to_i).first.id, position: ti, arabic: hadith)
+				Narration.create(hadith_chapter_id: h.id, position: ti, arabic: hadith)
 				ti = ti + 1
 			end
 		end
