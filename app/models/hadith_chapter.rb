@@ -9,11 +9,21 @@ class HadithChapter < ActiveRecord::Base
     allow_destroy: true
 
 	def set_position
-		chapters_list = self.hadith_book.hadith_chapters
-		if chapters_list.count > 1
-			self.update_attributes(position: chapters_list.count)
+
+		if self.hadith_book.hadith_chapters.present?
+
+			chapters_list = self.hadith_book.hadith_chapters
+
+			if chapters_list.count > 1
+				self.update_attributes(position: chapters_list.count)
+			else
+				self.update_attributes(position: 1)
+			end
+
 		else
+
 			self.update_attributes(position: 1)
+
 		end
 	end
 
