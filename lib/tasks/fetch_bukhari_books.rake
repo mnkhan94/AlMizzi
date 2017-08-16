@@ -13,8 +13,8 @@ require 'json'
 	HadithCollection.first.hadith_books.destroy_all
 	
 		doc = Nokogiri::HTML(open(url))
-		doc.css(".arabic_book_name").each do |book|
-			HadithBook.create(hadith_collection_id: @collection.id, title: book.text)
+		doc.css(".arabic_book_name").each_with_index do |book, index|
+			HadithBook.create(hadith_collection_id: @collection.id, title: book.text, position: index + 1)
 			puts book.text
 		end
 
