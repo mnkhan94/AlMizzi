@@ -1,7 +1,7 @@
 # http://www.natadarrab.com/verbs/1230.json
 
 desc "Fetch From Bukhari"
-task :fetch_bukhari => :environment do
+task :fetch_bukhari_books => :environment do
 require 'rubygems'
 require 'nokogiri'
 require 'open-uri'
@@ -9,6 +9,8 @@ require 'json'
 
 	url = "https://sunnah.com/bukhari"
 	@collection = HadithCollection.first
+
+	HadithCollection.first.hadith_books.destroy_all
 	
 		doc = Nokogiri::HTML(open(url))
 		doc.css(".arabic_book_name").each do |book|

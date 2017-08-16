@@ -1,7 +1,7 @@
 class HadithChapter < ActiveRecord::Base
 
 	belongs_to :hadith_book
-	has_many :narrations
+	has_many :narrations, dependent: :destroy
 
 	after_create :set_position
 

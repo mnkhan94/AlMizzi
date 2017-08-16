@@ -13,6 +13,10 @@ Rails.application.routes.draw do
 
   get '/hadith_chapters/:hadith_book_id/new' => 'hadith_chapters#new'
 
+  get '/hadith_books/:hadith_collection_id/new' => 'hadith_books#new'
+
+  get '/test/bukhari/:link' => 'pages#test'
+
   root 'pages#home'
 
   # Example of regular route:
