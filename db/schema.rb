@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170627201403) do
+ActiveRecord::Schema.define(version: 20170817182514) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 20170627201403) do
     t.integer "hadith_chapter_id"
     t.text    "arabic"
     t.text    "english"
+    t.text    "annotated_arabic"
   end
 
   add_index "narrations", ["hadith_chapter_id"], name: "index_narrations_on_hadith_chapter_id", using: :btree

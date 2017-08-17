@@ -78,18 +78,31 @@
 					<button onclick="saveColor(<%= hadith.id %>)" class="btn btn-success">Save Coloring</button>
 
 
-					<h4>Who is this <span class="selected-narrator">عبدان</span>?</h4>
+					<h4>Who is this <span class="selected-narrator">عبدان</span> ?</h4>
 					<select name="" id="" class="narrator-identifier">
 						<option value="">Search</option>
 						<% Narrator.all.each do |n| %>
 							<option value="<%= n.id %>" style="direction: rtl;"><%= n.full_name %></option>
 						<% end %>
 					</select>
+					
+					<% if h = hadith.annotated_arabic %>
+						<br><br>
+						<span class="btn btn-danger reset-hadith" data-id="<%= hadith.id %>">
+							Reset Annotations
+						</span>
+					<% end %>
+
 				</div>
 
 			</div>
 			<div class="col-lg-6 arabic-text hadith" data-id="<%= hadith.id %>">
-				<%= hadith.arabic.html_safe %>
+				
+				<% if h = hadith.annotated_arabic %>
+					<%= h.html_safe %>
+				<% else %>
+					<%= strip_tags(hadith.arabic) %>
+				<% end %>
 			</div>
 		</div>
 		<hr>
@@ -175,7 +188,7 @@
 		    dataType: "script",
 		    url: '/narrations/'+id,
 		    contentType: 'application/json',
-		    data: JSON.stringify({ arabic: $(".hadith[data-id="+id+"]").html(), _method:'put' })
+		    data: JSON.stringify({ annotated_arabic: $(".hadith[data-id="+id+"]").html(), _method:'put' })
 		}).done(function( response )
         {
             alert( "Data Saved: " );
@@ -208,8 +221,23 @@
     });
     }
 
-        narrator_refresh();
+    narrator_refresh();
 
+    $(".reset-hadith").on('click', function(){
+    	id = $(this).attr("data-id")
+    	reset_hadith(id)
+    })
+
+    function reset_hadith(id) {
+    	$.ajax({
+		    type: "GET",
+		    url: '/reset/'+id,
+		    contentType: 'application/json',
+		}).done(function( response )
+        {
+            // alert( "Data Saved: " );
+        });
+    }
     
 
 </script>

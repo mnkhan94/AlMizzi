@@ -21,6 +21,11 @@ class NarrationsController < ApplicationController
   def edit
   end
 
+  def reset_narration
+    n = Narration.find(params[:id])
+    n.reset_narration
+  end
+
   # POST /narrations
   # POST /narrations.json
   def create

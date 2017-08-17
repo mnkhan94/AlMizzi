@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   resources :narrations
   resources :narrators
 
+  get '/reset/:id' => 'narrations#reset_narration'
+
   get '/hadith_chapters/:hadith_book_id/new' => 'hadith_chapters#new'
 
   get '/hadith_books/:hadith_collection_id/new' => 'hadith_books#new'
