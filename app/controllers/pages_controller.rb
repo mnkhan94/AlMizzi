@@ -128,6 +128,16 @@ class PagesController < ApplicationController
 		@result = result
 	end
 
+	def test_bukhari_narrators
+		narrator = params[:search]
+
+		@search = params[:search]
+
+		n = HadithCollection.first.narrations
+		@ahadith = n.where("arabic like ?", "%#{narrator}%")
+
+	end
+
 	def collect_between(first, last)
 	  first == last ? [first] : [first, *collect_between(first.next, last)]
 	end
