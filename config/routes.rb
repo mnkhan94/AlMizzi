@@ -15,7 +15,8 @@ Rails.application.routes.draw do
 
   get '/hadith_books/:hadith_collection_id/new' => 'hadith_books#new'
 
-  get '/test/bukhari/:link' => 'pages#test'
+  get '/test/bukhari/:link' => 'pages#test_bukhari'
+  get '/test/muslim/:link' => 'pages#test_bukhari'
 
   root 'pages#home'
 

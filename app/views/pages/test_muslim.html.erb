@@ -1,0 +1,85 @@
+<p id="notice"><%= notice %></p>
+
+<style>
+
+	@import url('https://fonts.googleapis.com/css?family=Mirza:700|Lemonada');
+
+
+	.orange-text {
+		color: #e67e22;
+	}
+
+	.green-text {
+		color: #000;
+		background-color: #f5ffe3;
+		padding: 5px;
+	}
+
+	.bold-text {
+		font-weight: bold;
+	}
+
+	.narrator {
+	    /* text-decoration: underline; */
+/*	    border: 3px dashed #ffc4cf;
+
+*/	    padding: 7px;
+/*		background-color: #ffc4cf;
+*/		border-bottom: 3px solid #ffc4cf;
+/*	    display: block;
+*/	    direction: rtl;
+		
+		font-size: 18px;
+		font-family: 'Mirza', cursive;
+		font-weight: 700;
+
+
+	}
+
+	.id-this {
+		background-color: #f1c40f;
+		border: none;
+	}
+
+	.ahadith {
+		border-right: 10px solid #ccc;
+    	padding-right: 15px;
+	}
+
+</style>
+
+<div class="text-center jumbotron">
+	<h1>Book <%= params[:link] %></h1>	
+
+	<br>
+	<p><%= @b %></p>	
+
+</div>
+
+	
+	<% @result.each do |chapter| %>
+	<div class="row">
+		
+		<div class="well">
+			<h1><%= chapter["number"] %></h1>
+			<h3 style="text-align: right; direction: rtl;"><%= chapter["title"] %></h3>
+		</div>
+
+		<br>
+
+		<p style="text-align: right; direction: rtl;"><%= chapter["notes"] %></p>
+
+		<div class="ahadith">
+			<% chapter["hadith"].each do |h| %>
+				<li>
+					<p style="text-align: right; direction: rtl;"><%= h %></p>
+				</li>
+			<% end %>
+		</div>
+		
+
+	</div>
+	<hr>
+	<% end %>
+
+
