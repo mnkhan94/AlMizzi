@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   resources :narrators
 
   get '/reset/:id' => 'narrations#reset_narration'
+  post '/bulker' => 'narrations#bulker'
 
   get '/hadith_chapters/:hadith_book_id/new' => 'hadith_chapters#new'
 

@@ -54,6 +54,8 @@
 	<br>
 	<p>Total Hadith including this Narrator's name: <%= @ahadith.count %></p>	
 
+	<span class="btn btn-block btn-success bulker">Add All</span>
+
 </div>
 
 	
@@ -90,5 +92,22 @@
 		c = $(this).html().replace(search, '<span class="narrator id-this">'+search+'</span>');
 		$(this).html(c)
 	})
+
+	$(".bulker").on("click", function(){
+		bulker(search)
+	})
+
+	function bulker(search){
+		$.ajax({
+		    type: "POST",
+		    dataType: "script",
+		    url: '/bulker',
+		    contentType: 'application/json',
+		    data: JSON.stringify({ name: search, _method:'post' }),
+		    success: function(){
+		    	alert("All Done :)")
+		    }
+		})
+	}
 
 </script>

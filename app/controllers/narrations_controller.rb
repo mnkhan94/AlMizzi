@@ -26,6 +26,11 @@ class NarrationsController < ApplicationController
     n.reset_narration
   end
 
+  def bulker
+    Narration.bulk_add_narrator(params[:name])
+    head :ok, content_type: "text/html"
+  end
+
   # POST /narrations
   # POST /narrations.json
   def create
