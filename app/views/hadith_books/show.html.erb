@@ -58,11 +58,10 @@
 				<span class="pull-right" style="margin-left: 6px;"> <%= index + 1 %></span>
 			</h3>
 	</div>
-
-	<div class="row">
 		
 
 		<% chapter.narrations.each do |hadith| %>
+		<div class="row">
 			<div class="col-lg-6">
 
 				<div class="editor">
@@ -78,7 +77,6 @@
 					<br><br>
 					<button onclick="saveColor(<%= hadith.id %>)" class="btn btn-success">Save Coloring</button>
 
-					<hr>
 
 					<h4>Who is this <span class="selected-narrator">عبدان</span>?</h4>
 					<select name="" id="" class="narrator-identifier">
@@ -93,10 +91,10 @@
 			<div class="col-lg-6 arabic-text hadith" data-id="<%= hadith.id %>">
 				<%= hadith.arabic.html_safe %>
 			</div>
+		</div>
+		<hr>
 		<% end %>
 
-	</div>
-	<hr>
 	<% end %>
 
 
