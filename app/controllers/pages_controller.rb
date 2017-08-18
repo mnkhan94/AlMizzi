@@ -130,11 +130,24 @@ class PagesController < ApplicationController
 
 	def test_bukhari_narrators
 		narrator = params[:search]
+		name = narrator
 
 		@search = params[:search]
 
 		n = HadithCollection.first.narrations
 		@ahadith = n.where("arabic like ?", "%#{narrator}%")
+
+		# 
+
+		prefixes = ["حَدَّثَنَا ", "قَالَ أَخْبَرَنِي ", "فَأَخْبَرَنِي ", "َأَخْبَرَنِي ", "قَالَ ", "عَنِ ", "عَنْ ", "سَمِعَ ", "سَمِعْتُ "]
+
+		@filtered_name = name
+		prefixes.each do |p|
+			@filtered_name = @filtered_name.gsub(p, "")
+		end
+
+		# @filtered_name = name.gsub("قَالَ أَخْبَرَنِي ", "")
+
 
 	end
 

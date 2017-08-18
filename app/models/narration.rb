@@ -8,8 +8,16 @@ class Narration < ActiveRecord::Base
 
 	def self.bulk_add_narrator(name)
 
+		prefixes = ["حَدَّثَنَا ", "قَالَ أَخْبَرَنِي ", "فَأَخْبَرَنِي ", "َأَخْبَرَنِي ", "قَالَ ", "عَنِ ", "عَنْ ", "سَمِعَ ", "سَمِعْتُ "]
+
 		n = HadithCollection.first.narrations
+
 		ahadith = n.where("arabic like ?", "%#{name}%")
+
+		filtered_name = name
+		prefixes.each do |p|
+			filtered_name = filtered_name.gsub(p, "")
+		end
 
 		ahadith.each do |h|
 
@@ -17,12 +25,12 @@ class Narration < ActiveRecord::Base
 
 			if h.annotated_arabic.present?
 				annot = h.annotated_arabic
-				new_version = annot.gsub!(name, '<span class="narrator id-this">'+name+'</span>')
+				new_version = annot.gsub!(filtered_name, '<span class="narrator id-this">'+filtered_name+'</span>')
 				h.update(annotated_arabic: new_version)
 			else
 				h.update(annotated_arabic: original)
 				annot = h.annotated_arabic
-				new_version = annot.gsub!(name, '<span class="narrator id-this">'+name+'</span>')
+				new_version = annot.gsub!(filtered_name, '<span class="narrator id-this">'+filtered_name+'</span>')
 				h.update(annotated_arabic: new_version)
 			end
 

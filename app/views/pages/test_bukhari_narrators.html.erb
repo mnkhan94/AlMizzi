@@ -54,7 +54,15 @@
 	<br>
 	<p>Total Hadith including this Narrator's name: <%= @ahadith.count %></p>	
 
+	<br>
+	<code><%= @filtered_name %></code>
+
 	<span class="btn btn-block btn-success bulker">Add All</span>
+
+	<hr>
+
+	<input type="text" class="text-center form-control search-box">
+	<span class="btn btn-block btn-info search-narrator">Search</span>
 
 </div>
 
@@ -109,5 +117,9 @@
 		    }
 		})
 	}
+
+	$(".search-narrator").on('click', function(){
+		window.location.assign("/test/bukhari/narrator/" + $(".search-box").val())
+	})
 
 </script>
