@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
   get '/reset/:id' => 'narrations#reset_narration'
   post '/bulker' => 'narrations#bulker'
+  post '/remove_narrator' => 'narrations#remove_narrator'
 
   get '/hadith_chapters/:hadith_book_id/new' => 'hadith_chapters#new'
 

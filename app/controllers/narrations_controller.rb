@@ -31,6 +31,13 @@ class NarrationsController < ApplicationController
     head :ok, content_type: "text/html"
   end
 
+  def remove_narrator
+    id = params[:id].to_i
+    name = params[:name]
+    Narration.remove_narrator(id, name)
+    head :ok, content_type: "text/html"
+  end
+
   # POST /narrations
   # POST /narrations.json
   def create

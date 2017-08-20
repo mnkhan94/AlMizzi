@@ -55,4 +55,12 @@ class Narration < ActiveRecord::Base
 
 	end
 
+	def self.remove_narrator(id, name)
+		# <span class=\"narrator id-this\">عَبْدُ اللَّهِ بْنُ يُوسُفَ</span>
+		hadith = Narration.find(id)
+		sweep = hadith.annotated_arabic.gsub("<span class=\"narrator id-this\">#{name}</span>", "#{name}")
+		hadith.update(annotated_arabic: sweep)
+		# return sweep
+	end
+
 end

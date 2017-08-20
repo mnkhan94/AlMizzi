@@ -13,5 +13,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap
+//= jquery.qtip.min.js
 //= require cocoon
 //= require_tree .

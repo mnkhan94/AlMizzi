@@ -243,4 +243,52 @@
 
 </script>
 
+<script>
+	$('.id-this').qtip({
+	    content: {
+	        text: function(event, api) {
+	            // Retrieve content from custom attribute of the $('.selector') elements.
+	            text = $(this).html();
+	            id = $(this).parent().attr('data-id');
+
+	            return "<span class='btn btn-danger remover' data-id='"+id+"' data-narrator='"+text+"'> x </span>"
+
+	        },
+	        title: function(event, api) {
+	            // Retrieve content from custom attribute of the $('.selector') elements.
+	            return $(this).parent().attr('data-id');
+	        },
+	        button: 'Close'
+	    },
+		show: {
+	        event: 'click'
+	    },
+		hide: {
+	        event: false
+	    }
+	});
+
+	$('body').on('click', '.remover', function() {
+		name = $(this).attr("data-narrator");
+
+	    remover(id, name)
+	});
+
+	function remover(id, name) {
+		$.ajax({
+		    type: "POST",
+		    dataType: "script",
+		    url: '/remove_narrator',
+		    contentType: 'application/json',
+		    data: JSON.stringify({ id: id, name: name, _method:'post' }),
+		    success: function(){
+		    	location.reload();
+		    }
+		})
+
+	}
+
+</script>
+
+
 <%= render "hadith_books/narrator_bulker" %>
