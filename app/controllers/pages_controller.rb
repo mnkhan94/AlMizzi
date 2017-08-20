@@ -150,6 +150,7 @@ class PagesController < ApplicationController
 			"أَخْبَرَنَا ", 
 			"قَالَ ",
 			"قَالَتْ ",
+			"سَأَلَ ",
 			"عَنِ ", 
 			"عَنْ ", 
 			"أَنَّ ", 
