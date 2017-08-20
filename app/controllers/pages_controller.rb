@@ -161,6 +161,14 @@ class PagesController < ApplicationController
 			@filtered_name = @filtered_name.gsub(p, "")
 		end
 
+		# render json: @ahadith
+
+		render :json => {
+			:ahadith => @ahadith, 
+			:filtered_name => @filtered_name,
+			:count => @ahadith.count
+		}
+
 		# @filtered_name = name.gsub("قَالَ أَخْبَرَنِي ", "")
 
 

@@ -1,0 +1,123 @@
+<style>
+	.returned-ahadith {
+		margin: 0 10px;
+	}
+
+	.modal-body .jumbotron {
+		text-align: center;
+	}
+
+</style>
+
+<div id="narrator_bulker" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body">
+
+		<div class="text-center jumbotron">
+			<h1>Bulker</h1>	
+
+			<br>
+			<p>Total Hadith including this Narrator's name: <span class="search-results-count"></span></p>	
+
+			<br>
+			<code><span class="filtered_name"></span></code><br>
+
+			<span class="btn btn-block btn-success bulkIt">Add All</span>
+
+			<hr>
+
+		</div>
+
+		<!--  -->
+
+		<div class="row returned-ahadith">
+		
+			<div class="well">
+			</div>
+
+			<br>
+			
+
+		</div>
+
+		<!--  -->
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+	var global_search = ""
+	
+	$(".bulker").on('click', function(){
+		bulker = $("#narrator_bulker");
+		bulker.modal("show");
+	    var selection = window.getSelection().getRangeAt(0).toString();
+	    bulker.find(".search-sent").html(selection);
+
+	    console.log(selection)
+	    global_search = selection
+
+	    testSearch(selection)
+	    // alert(selection);
+	})
+
+	$(".bulkIt").on('click', function(){
+		bulkIt(global_search);
+	})
+
+	// /test/bukhari/narrator/
+	function testSearch(search){
+		$(".returned-ahadith").empty();
+		$.get( "/test/bukhari/narrator/" + search, function( data ) {
+
+			$(".filtered_name").html(data["filtered_name"])
+			$(".search-results-count").html(data["count"])
+
+			$.each(data["ahadith"], function( index, value ) {
+
+				$(".returned-ahadith").append('<p style="text-align: right; direction: rtl;">' + value["arabic"] +'</p><hr>')
+
+				console.log(value)
+			});
+
+			$(".returned-ahadith").children().each(function(){
+				c = $(this).html().replace(search, '<span class="narrator id-this">'+search+'</span>');
+				$(this).html(c)
+
+			})
+		    
+		});
+
+	}
+
+	function bulkIt(search) {
+		$.ajax({
+		    type: "POST",
+		    dataType: "script",
+		    url: '/bulker',
+		    contentType: 'application/json',
+		    data: JSON.stringify({ name: search, _method:'post' }),
+		    success: function(){
+		    	$("#narrator_bulker").modal("hide");
+		    	alert("All Done :)")
+		    	location.reload();
+		    }
+		})
+
+	}
+
+</script>
