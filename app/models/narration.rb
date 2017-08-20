@@ -42,8 +42,12 @@ class Narration < ActiveRecord::Base
 
 			if h.annotated_arabic.present?
 				annot = h.annotated_arabic
-				new_version = annot.gsub!(filtered_name, '<span class="narrator id-this">'+filtered_name+'</span>')
-				h.update(annotated_arabic: new_version)
+
+				if annot.include? '<span class="narrator id-this">'+filtered_name+'</span>'
+				else
+					new_version = annot.gsub!(filtered_name, '<span class="narrator id-this">'+filtered_name+'</span>')
+					h.update(annotated_arabic: new_version)
+				end
 			else
 				h.update(annotated_arabic: original)
 				annot = h.annotated_arabic
