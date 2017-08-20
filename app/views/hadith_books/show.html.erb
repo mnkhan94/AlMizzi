@@ -60,7 +60,7 @@
 	</div>
 		
 
-		<% chapter.narrations.each do |hadith| %>
+		<% chapter.narrations.order("position ASC").each do |hadith| %>
 		<div class="row">
 			<div class="col-lg-6">
 
