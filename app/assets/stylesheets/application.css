@@ -19,6 +19,18 @@
  @import url('https://fonts.googleapis.com/css?family=Scheherazade');
 
 
+.nav {
+	background-color: #fff;
+	max-width: 125px;
+	position: fixed;
+    right: 10px;
+    top: 10px;
+}
+
+.logo {
+	max-width: 125px;
+}
+
 .arabic-text {
 	text-align: right;
 }
