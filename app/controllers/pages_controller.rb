@@ -180,5 +180,21 @@ class PagesController < ApplicationController
 	  first == last ? [first] : [first, *collect_between(first.next, last)]
 	end
 
+	def assign_roles
+		@users = User.all
+
+		roles = {
+			"c" => "Chain",
+			"h" => "Harmonizer",
+			"a" => "Arabic"
+		}
+
+		if params[:id]
+			u = User.find(params[:id])
+
+			u.update(roles: roles[params[:role]])
+		end
+	end
+
 
 end

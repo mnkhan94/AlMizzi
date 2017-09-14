@@ -1,0 +1,173 @@
+<script>
+	if(!window.Kolich){
+	  Kolich = {};
+	}
+
+	Kolich.Selector = {};
+	Kolich.Selector.getSelected = function(){
+	  var t = '';
+	  if(window.getSelection){
+	    t = window.getSelection();
+
+	  }else if(document.getSelection){
+	    t = document.getSelection();
+	  }else if(document.selection){
+	    t = document.selection.createRange().text;
+	  }
+	  return t;
+	}
+
+	Kolich.Selector.mouseup = function(){
+	  var st = Kolich.Selector.getSelected();
+	  if(st!=''){
+	  	
+
+	    revised = "<span class='orange-text'>"+st+"</span>";
+	    id = window.getSelection().anchorNode.parentElement.getAttribute("data-id");
+
+	    original = $(".hadith[data-id="+id+"]").html();
+
+	    color = $(".hadith[data-id="+id+"]").parent().find(".colorbook").val();
+	    console.log(color)
+	    console.log("id:" + id)
+
+
+	    if (color != null && color != "") {
+
+	    	if (color != "narrator") {
+	    		cleanSpans();
+	    	}
+
+		    wrapSelectedText();
+
+	    }
+	    // $(".hadith[data-id="+id+"]").html(revised);
+	  }
+	}
+
+	$(document).ready(function(){
+	  $(document).bind("mouseup", Kolich.Selector.mouseup);
+	});
+
+	function cleanSpans(){
+		// $(".hadith[data-id="+id+"]").find("span[class="+color+"]").contents().unwrap();
+	};
+
+	function wrapSelectedText() {       
+	    var selection= window.getSelection().getRangeAt(0);
+	    var selectedText = selection.extractContents();
+	    var span= document.createElement("span");
+	    span.setAttribute("class", color);
+	    span.appendChild(selectedText);
+	    selection.insertNode(span);
+	}
+
+
+    function saveColor(id) {
+    	$.ajax({
+		    type: "PUT",
+		    dataType: "script",
+		    url: '/narrations/'+id,
+		    contentType: 'application/json',
+		    data: JSON.stringify({ annotated_arabic: $(".hadith[data-id="+id+"]").html(), _method:'put' })
+		}).done(function( response )
+        {
+            alert( "Data Saved: " );
+        });
+    }
+
+    $(".narrator").on("click", function(){
+    	$(".tempSelect").removeClass("tempSelect");
+		txt = $(this).html();
+		box = $(this).parent().parent();
+		box.find(".selected-narrator").html(txt);
+		$(this).addClass("tempSelect");
+
+	});
+
+    $(".narrator-identifier").on('change', function(){
+    	$(".tempSelect").attr("data-id", $(this).val());
+    	narrator_refresh();
+    	$(this).prop('selectedIndex',0);
+    })
+
+
+    function narrator_refresh(){
+    	$(".narrator").each(function(){
+    	if ($(this).attr("data-id") == null || $(this).attr("data-id") == "" ){
+    		$(this).addClass("id-this");
+    	} else {
+    		$(this).removeClass("id-this");
+    	}
+    });
+    }
+
+    narrator_refresh();
+
+    $(".reset-hadith").on('click', function(){
+    	id = $(this).attr("data-id")
+    	reset_hadith(id)
+    })
+
+    function reset_hadith(id) {
+    	$.ajax({
+		    type: "GET",
+		    url: '/reset/'+id,
+		    contentType: 'application/json',
+		}).done(function( response )
+        {
+            // alert( "Data Saved: " );
+        });
+    }
+    
+
+</script>
+
+<script>
+	$('.id-this').qtip({
+	    content: {
+	        text: function(event, api) {
+	            // Retrieve content from custom attribute of the $('.selector') elements.
+	            text = $(this).html();
+	            id = $(this).parent().attr('data-id');
+
+	            return "<span class='btn btn-danger remover' data-id='"+id+"' data-narrator='"+text+"'> x </span>"
+
+	        },
+	        title: function(event, api) {
+	            // Retrieve content from custom attribute of the $('.selector') elements.
+	            return $(this).parent().attr('data-id');
+	        },
+	        button: 'Close'
+	    },
+		show: {
+	        event: 'click'
+	    },
+		hide: {
+	        event: false
+	    }
+	});
+
+	$('body').on('click', '.remover', function() {
+		name = $(this).attr("data-narrator");
+
+	    remover(id, name)
+	});
+
+	function remover(id, name) {
+		$.ajax({
+		    type: "POST",
+		    dataType: "script",
+		    url: '/remove_narrator',
+		    contentType: 'application/json',
+		    data: JSON.stringify({ id: id, name: name, _method:'post' }),
+		    success: function(){
+		    	location.reload();
+		    }
+		})
+
+	}
+
+</script>
+
+<%= render "hadith_books/modals/narrator_bulker" %>

@@ -36,10 +36,14 @@
 
 	}
 
+	<% if current_user.permission("chain") %>
+
 	.id-this {
 		background-color: #f1c40f;
 		border: none;
 	}
+
+	<% end %>
 
 	.arabic-text {
 		direction: rtl;
@@ -65,33 +69,42 @@
 			<div class="col-lg-6">
 
 				<div class="editor">
-					<button class="btn btn-info bulker">Bulker</button>
-					<br><br>
 
-					<select name="" class="colorbook">
-						<option value="">Select Option</option>
-						<option value="orange-text">Orange</option>
-						<option value="green-text">Green</option>
-						<option value="bold-text">Bold</option>
-						<option value="narrator">Narrator</option>
-					</select>
-					<br><br>
-					<button onclick="saveColor(<%= hadith.id %>)" class="btn btn-success">Save Coloring</button>
+					<% if current_user.permission("chain") %>
 
-
-					<h4>Who is this <span class="selected-narrator">عبدان</span> ?</h4>
-					<select name="" id="" class="narrator-identifier">
-						<option value="">Search</option>
-						<% Narrator.all.each do |n| %>
-							<option value="<%= n.id %>" style="direction: rtl;"><%= n.full_name %></option>
-						<% end %>
-					</select>
-					
-					<% if h = hadith.annotated_arabic %>
+						<button class="btn btn-info bulker">Bulker</button>
 						<br><br>
-						<span class="btn btn-danger reset-hadith" data-id="<%= hadith.id %>">
-							Reset Annotations
-						</span>
+
+						<select name="" class="colorbook">
+							<option value="">Select Option</option>
+							<option value="orange-text">Orange</option>
+							<option value="green-text">Green</option>
+							<option value="bold-text">Bold</option>
+							<option value="narrator">Narrator</option>
+						</select>
+						<br><br>
+						<button onclick="saveColor(<%= hadith.id %>)" class="btn btn-success">Save Coloring</button>
+
+
+						<h4>Who is this <span class="selected-narrator">عبدان</span> ?</h4>
+						<select name="" id="" class="narrator-identifier">
+							<option value="">Search</option>
+							<% Narrator.all.each do |n| %>
+								<option value="<%= n.id %>" style="direction: rtl;"><%= n.full_name %></option>
+							<% end %>
+						</select>
+						
+						<% if h = hadith.annotated_arabic %>
+							<br><br>
+							<span class="btn btn-danger reset-hadith" data-id="<%= hadith.id %>">
+								Reset Annotations
+							</span>
+						<% end %>
+
+					<% end %>
+
+					<% if current_user.permission("harmonizer") %>
+						<button class="btn btn-info harmonizer" data-id="<%= hadith.id %>">Matn Harmonizer</button>
 					<% end %>
 
 				</div>
@@ -118,177 +131,11 @@
 <%= link_to 'Back', hadith_books_path %>
 
 
-<script>
-	if(!window.Kolich){
-	  Kolich = {};
-	}
+<% if current_user.permission("chain") %>
+	<%= render "hadith_books/scripts/narrator" %>
+<% end %>
 
-	Kolich.Selector = {};
-	Kolich.Selector.getSelected = function(){
-	  var t = '';
-	  if(window.getSelection){
-	    t = window.getSelection();
+<% if current_user.permission("harmonizer") %>
 
-	  }else if(document.getSelection){
-	    t = document.getSelection();
-	  }else if(document.selection){
-	    t = document.selection.createRange().text;
-	  }
-	  return t;
-	}
-
-	Kolich.Selector.mouseup = function(){
-	  var st = Kolich.Selector.getSelected();
-	  if(st!=''){
-	  	
-
-	    revised = "<span class='orange-text'>"+st+"</span>";
-	    id = window.getSelection().anchorNode.parentElement.getAttribute("data-id");
-
-	    original = $(".hadith[data-id="+id+"]").html();
-
-	    color = $(".hadith[data-id="+id+"]").parent().find(".colorbook").val();
-	    console.log(color)
-	    console.log("id:" + id)
-
-
-	    if (color != null && color != "") {
-
-	    	if (color != "narrator") {
-	    		cleanSpans();
-	    	}
-
-		    wrapSelectedText();
-
-	    }
-	    // $(".hadith[data-id="+id+"]").html(revised);
-	  }
-	}
-
-	$(document).ready(function(){
-	  $(document).bind("mouseup", Kolich.Selector.mouseup);
-	});
-
-	function cleanSpans(){
-		// $(".hadith[data-id="+id+"]").find("span[class="+color+"]").contents().unwrap();
-	};
-
-	function wrapSelectedText() {       
-	    var selection= window.getSelection().getRangeAt(0);
-	    var selectedText = selection.extractContents();
-	    var span= document.createElement("span");
-	    span.setAttribute("class", color);
-	    span.appendChild(selectedText);
-	    selection.insertNode(span);
-	}
-
-
-    function saveColor(id) {
-    	$.ajax({
-		    type: "PUT",
-		    dataType: "script",
-		    url: '/narrations/'+id,
-		    contentType: 'application/json',
-		    data: JSON.stringify({ annotated_arabic: $(".hadith[data-id="+id+"]").html(), _method:'put' })
-		}).done(function( response )
-        {
-            alert( "Data Saved: " );
-        });
-    }
-
-    $(".narrator").on("click", function(){
-    	$(".tempSelect").removeClass("tempSelect");
-		txt = $(this).html();
-		box = $(this).parent().parent();
-		box.find(".selected-narrator").html(txt);
-		$(this).addClass("tempSelect");
-
-	});
-
-    $(".narrator-identifier").on('change', function(){
-    	$(".tempSelect").attr("data-id", $(this).val());
-    	narrator_refresh();
-    	$(this).prop('selectedIndex',0);
-    })
-
-
-    function narrator_refresh(){
-    	$(".narrator").each(function(){
-    	if ($(this).attr("data-id") == null || $(this).attr("data-id") == "" ){
-    		$(this).addClass("id-this");
-    	} else {
-    		$(this).removeClass("id-this");
-    	}
-    });
-    }
-
-    narrator_refresh();
-
-    $(".reset-hadith").on('click', function(){
-    	id = $(this).attr("data-id")
-    	reset_hadith(id)
-    })
-
-    function reset_hadith(id) {
-    	$.ajax({
-		    type: "GET",
-		    url: '/reset/'+id,
-		    contentType: 'application/json',
-		}).done(function( response )
-        {
-            // alert( "Data Saved: " );
-        });
-    }
-    
-
-</script>
-
-<script>
-	$('.id-this').qtip({
-	    content: {
-	        text: function(event, api) {
-	            // Retrieve content from custom attribute of the $('.selector') elements.
-	            text = $(this).html();
-	            id = $(this).parent().attr('data-id');
-
-	            return "<span class='btn btn-danger remover' data-id='"+id+"' data-narrator='"+text+"'> x </span>"
-
-	        },
-	        title: function(event, api) {
-	            // Retrieve content from custom attribute of the $('.selector') elements.
-	            return $(this).parent().attr('data-id');
-	        },
-	        button: 'Close'
-	    },
-		show: {
-	        event: 'click'
-	    },
-		hide: {
-	        event: false
-	    }
-	});
-
-	$('body').on('click', '.remover', function() {
-		name = $(this).attr("data-narrator");
-
-	    remover(id, name)
-	});
-
-	function remover(id, name) {
-		$.ajax({
-		    type: "POST",
-		    dataType: "script",
-		    url: '/remove_narrator',
-		    contentType: 'application/json',
-		    data: JSON.stringify({ id: id, name: name, _method:'post' }),
-		    success: function(){
-		    	location.reload();
-		    }
-		})
-
-	}
-
-</script>
-
-
-<%= render "hadith_books/narrator_bulker" %>
+	<%= render "hadith_books/scripts/harmonizer" %>
+<% end %>

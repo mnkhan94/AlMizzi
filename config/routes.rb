@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  devise_for :admins
+  devise_for :users
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -24,6 +26,14 @@ Rails.application.routes.draw do
   get '/test/bukhari/narrator/:search' => 'pages#test_bukhari_narrators'
 
   get '/test/muslim/:link' => 'pages#test_bukhari'
+
+  post '/add_harmony' => 'resources#add_harmony'
+  get '/get_harmonies/:id' => 'resources#get_harmonies'
+
+  get '/assign_roles' => 'pages#assign_roles'
+
+  get '/assign_roles/:id/:role' => 'pages#assign_roles'
+
 
   root 'pages#home'
 

@@ -1,25 +1,17 @@
-<p id="notice"><%= notice %></p>
 
-<h1>Listing Hadith Collections</h1>
+<h1>
+  Collections
+</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<hr>
 
-  <tbody>
-    <% @hadith_collections.each do |hadith_collection| %>
-      <tr>
-        <td><%= link_to 'Show', hadith_collection %></td>
-        <td><%= link_to 'Edit', edit_hadith_collection_path(hadith_collection) %></td>
-        <td><%= link_to 'Destroy', hadith_collection, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<% HadithCollection.all.each do |c| %>
+  <div class="col-lg-4">
+    <div class="card-block">
+      <h4 class="card-title"><%= c.title %></h4>
+      <p class="card-text"></p>
+      <a href="/hadith_collections/<%= c.id %>" class="btn btn-primary">Enter</a>
+    </div>
+  </div>
+<% end %>
 
-<br>
-
-<%= link_to 'New Hadith collection', new_hadith_collection_path %>

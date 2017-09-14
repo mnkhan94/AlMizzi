@@ -15,4 +15,5 @@
 //= require bootstrap
 //= jquery.qtip.min.js
 //= require cocoon
+//= require froala.js
 //= require_tree .

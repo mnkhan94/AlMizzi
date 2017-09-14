@@ -1,0 +1,56 @@
+<style>
+  .arabic {
+    text-align: right;
+    direction: rtl;
+    font-size: 24px;
+  }
+
+  .number {
+    color: #919191;
+  }
+  
+  .table-wrap {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .panel {
+    margin-bottom: 0;
+  }
+
+  .blue {
+    color: #3498db;
+  }
+
+  .roler {
+    margin-top: 5px;
+  }
+
+</style>
+
+<p id="notice"><%= notice %></p>
+
+<div class="table-wrap">
+
+      <% @users.all.each do |user| %>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <span class="arabic pull-left">
+              <%= user.email %>
+              <br>
+              <small><%= user.roles %></small>
+            </span>
+            <span class="pull-right">
+
+              <h3 class="roler">
+                <a href="/assign_roles/<%= user.id %>/c">C</a>
+                <a href="/assign_roles/<%= user.id %>/h">H</a>
+                <a href="/assign_roles/<%= user.id %>/a">A</a>
+              </h3>
+
+
+            </span>
+          </div>
+        </div>
+      <% end %>
+</div>

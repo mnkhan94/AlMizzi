@@ -1,6 +1,7 @@
 class Narration < ActiveRecord::Base
 
 	belongs_to :hadith_chapter
+	has_many :resources, as: :resourceable
 
 	def reset_narration
 		self.update(annotated_arabic: nil)

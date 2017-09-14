@@ -1,16 +1,29 @@
 
+<style>
+	.card-block {
+/*		border: 1px solid #ccc;
+*/		padding: 10px;
+		text-align: center;
+		border-radius: 15px;
+		-webkit-box-shadow: 0px 17px 32px -15px rgba(0,0,0,0.75);
+		-moz-box-shadow: 0px 17px 32px -15px rgba(0,0,0,0.75);
+		box-shadow: 0px 17px 32px -15px rgba(0,0,0,0.75);
+	}
+</style>
+
 <h1>
-	Books
+	Collections
 </h1>
 
-<ol>
+<hr>
 
 <% HadithCollection.all.each do |c| %>
-	<li>
-		<a href="/hadith_collections/<%= c.id %>">
-			<%= c.title %>
-		</a>
-	</li>
+	<div class="col-lg-4 col-md-6">
+	  <div class="card-block">
+	    <h4 class="card-title"><%= c.title %></h4>
+	    <p class="card-text"></p>
+	    <a href="/hadith_collections/<%= c.id %>" class="btn btn-primary">Enter</a>
+	  </div>
+	</div>
 <% end %>
-	
-</ol>
+

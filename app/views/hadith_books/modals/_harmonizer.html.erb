@@ -1,0 +1,197 @@
+<!-- ayah:
+narration_id:
+body: -->
+
+<style>
+	.returned-ahadith {
+		margin: 0 10px;
+	}
+
+	.modal-body .jumbotron {
+	}
+
+	.text-left {
+
+	}
+
+	.fetched-hadith {
+		text-align: right;
+		direction: rtl;
+		font-size: 24px;
+	}
+
+	.modal-dialog { width: 100%; margin: 0; border-radius: 0;}
+</style>
+
+<div id="harmonizer" class="modal fade " role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body">
+
+		<div class="jumbotron">
+
+			<div class="text-center">
+			<h1>Harmonizer</h1>	
+
+			<br>
+			<p class="">Add A Relevant Ayah or Hadith that gives a bigger picture to this Hadith:</p>	
+
+			<div class="fetched-hadith">
+				
+			</div>
+			
+			<input type="hidden" class="harmony-origin">
+			<br>
+			<div class="harmony-source">
+
+				
+				<section class="harmony-ayah-field">
+					<p class="text-left">Ayah:
+						<span class="btn btn-warning pull-right switch-harmony-source">Switch?</span>
+					</p>
+					<input type="text" class="form-control">
+				</section>
+
+				<section class="harmony-narration-field">
+					<p class="text-left">Narration (id):
+						<span class="btn btn-warning pull-right switch-harmony-source">Switch?</span>
+					</p>
+					<input type="text" class="form-control">
+				</section>
+			</div>
+
+			<br>
+			<p style="">Explain Relevance:</p>
+			</div>
+
+			<textarea class="form-control harmonizer-body"></textarea>
+
+			<br>	
+			<span class="btn btn-block btn-success bulkIt" onClick="harmonizeIt()">Add Harmony</span>
+
+			<hr>
+
+		</div>
+
+		<div class="harmony-collection">
+			
+		</div>
+
+		<!--  -->
+<!-- 
+		<div class="row returned-ahadith">
+		
+			<div class="well">
+			</div>
+
+			<br>
+			
+
+		</div> -->
+
+		<!--  -->
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+	// var global_search = ""
+	
+	$(".harmonizer").on('click', function(){
+
+		harmonizer = $("#harmonizer");
+
+		fetched_hadith = $(".arabic-text[data-id="+$(this).attr('data-id')+"]").text();
+		$(".fetched-hadith").html(fetched_hadith)
+
+		harmonizer.modal("show");
+
+		harmonizer.find(".harmony-origin").val($(this).attr('data-id'));
+		getHarmonies($(this).attr('data-id'));
+
+
+	 //    var selection = window.getSelection().getRangeAt(0).toString();
+	 //    bulker.find(".search-sent").html(selection);
+
+	 //    console.log(selection)
+	 //    global_search = selection
+
+	 //    testSearch(selection)
+	    // alert(selection);
+	})
+
+	$(".switch-harmony-source").on('click', function(){
+		$(".harmony-ayah-field").find("input").val('')
+		$(".harmony-narration-field").find("input").val('')
+
+		$(".harmony-ayah-field").toggle()
+		$(".harmony-narration-field").toggle()
+	})
+
+	function getHarmonies(id) {
+		$(".harmony-collection").html("");
+		$.get("/get_harmonies/" + id, function(data, status){
+	        console.log(data)
+	        $.each(data, function(index) {
+
+	        	if (data[index].ayah != null) {
+	        		$(".harmony-collection").append('<div class="panel panel-default"><div class="panel-body"><b>Ayah:</b> '+data[index].ayah+'</div></div>')
+	        	}
+	        	
+	        })
+	    });
+	}
+
+
+	function harmonizeIt() {
+
+		narration_id = $(".harmony-origin").val();
+	    ayah = $("#harmonizer").find(".harmony-ayah-field").find("input").val()
+	    hadith_reference = $("#harmonizer").find(".harmony-narration-field").find("input").val()
+	    body = $("#harmonizer").find(".fr-view").html();
+
+	    // console.log("body: " + body)
+
+		$.ajax({
+		    type: "POST",
+		    dataType: "script",
+		    url: '/add_harmony',
+		    contentType: 'application/json',
+		    data: JSON.stringify({ 
+		    	narration_id: narration_id,
+		    	ayah: ayah,
+		    	hadith_reference: hadith_reference,
+		    	body: body,
+		    	user_id: <%= current_user.id %>,
+		    	_method:'post' 
+		    }),
+		    success: function(){
+		    	$("#harmony").modal("hide");
+		    	alert("Harmony Added!")
+		    	// location.reload();
+		    }
+		})
+
+	}
+
+	$(".harmony-narration-field").hide();
+
+	$(".harmonizer-body").froalaEditor({
+      key: "NcoF-10qusafttE2F-10vw==",
+      placeholderText: ''
+    });
+
+</script>
